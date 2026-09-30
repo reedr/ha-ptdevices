@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "T\u00e1 an cuntas cumraithe cheana f\u00e9in",
+            "invalid_access_token": "Comhartha rochtana neamhbhail\u00ed"
+        },
+        "error": {
+            "cannot_connect": "Theip ar an nascadh",
+            "invalid_access_token": "Comhartha rochtana neamhbhail\u00ed",
+            "no_devices_found": "N\u00edl aon fheist\u00ed cl\u00e1raithe le do chuntas PTDevices.",
+            "unknown": "Earr\u00e1id gan choinne"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "Comhartha API"
+                },
+                "data_description": {
+                    "api_token": "An comhartha API do do chuntas PTDevices."
+                },
+                "description": "Cuir isteach an comhartha API do do chuntas PTDevices"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Cumhacht sheachtrach"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Voltas ceallra\u00ed"
+            },
+            "depth_level": {
+                "name": "Doimhneacht leibh\u00e9al"
+            },
+            "percent_level": {
+                "name": "Leibh\u00e9al c\u00e9atad\u00e1in"
+            },
+            "probe_temperature": {
+                "name": "Teocht an t\u00f3iread\u00f3ra"
+            },
+            "status": {
+                "name": "St\u00e1das",
+                "state": {
+                    "not_connected": "Gan cheangal",
+                    "not_connected_yet": "Gan nasc f\u00f3s",
+                    "power_internet_out_or_receiver_not_working": "Cumhacht n\u00f3 idirl\u00edon as feidhm n\u00f3 glacad\u00f3ir nach bhfuil ag obair",
+                    "press_transmitter_connect_button": "Br\u00faigh an cnaipe ceangail tarchurad\u00f3ra",
+                    "transmitter_not_reporting": "Tarchurad\u00f3ir gan tuairisci\u00fa",
+                    "working": "Ag obair"
+                }
+            },
+            "tx_signal": {
+                "name": "Neart comhartha LoRa"
+            },
+            "volume_level": {
+                "name": "Leibh\u00e9al toirte"
+            },
+            "wifi_signal": {
+                "name": "Neart comhartha Wi-Fi"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Theip ar cheangal: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Comhartha rochtana neamhbhail\u00ed: {error}"
+        }
+    }
+}

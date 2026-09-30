@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Nalog je ve\u0107 pode\u0161en",
+            "invalid_access_token": "Neispravan pristupni token"
+        },
+        "error": {
+            "cannot_connect": "Povezivanje nije uspelo",
+            "invalid_access_token": "Neispravan pristupni token",
+            "no_devices_found": "Nijedan ure\u0111aj nije registrovan na va\u0161em PTDevices nalogu.",
+            "unknown": "Neo\u010dekivana gre\u0161ka"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API token"
+                },
+                "data_description": {
+                    "api_token": "API token za va\u0161 PTDevices nalog."
+                },
+                "description": "Unesite API token za va\u0161 PTDevices nalog"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Spoljno napajanje"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Napon baterije"
+            },
+            "depth_level": {
+                "name": "Dubina nivoa"
+            },
+            "percent_level": {
+                "name": "Procenat nivoa"
+            },
+            "probe_temperature": {
+                "name": "Temperatura sonde"
+            },
+            "status": {
+                "name": "Status",
+                "state": {
+                    "not_connected": "Nije povezano",
+                    "not_connected_yet": "Jo\u0161 uvek nije povezano",
+                    "power_internet_out_or_receiver_not_working": "Nema napajanja, interneta ili prijemnik ne radi",
+                    "press_transmitter_connect_button": "Pritisnite dugme za povezivanje na predajniku",
+                    "transmitter_not_reporting": "Predajnik ne \u0161alje podatke",
+                    "working": "Radi"
+                }
+            },
+            "tx_signal": {
+                "name": "Ja\u010dina LoRa signala"
+            },
+            "volume_level": {
+                "name": "Zapremina nivoa"
+            },
+            "wifi_signal": {
+                "name": "Ja\u010dina Wi-Fi signala"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Povezivanje nije uspelo: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Neva\u017ee\u0107i pristupni token: {error}"
+        }
+    }
+}

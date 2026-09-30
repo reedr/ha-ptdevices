@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Konto ist bereits konfiguriert",
+            "invalid_access_token": "Ung\u00fcltiges Zugriffstoken"
+        },
+        "error": {
+            "cannot_connect": "Verbindung fehlgeschlagen",
+            "invalid_access_token": "Ung\u00fcltiges Zugriffstoken",
+            "no_devices_found": "In deinem PTDevices-Konto sind keine Ger\u00e4te registriert.",
+            "unknown": "Unerwarteter Fehler"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API-Token"
+                },
+                "data_description": {
+                    "api_token": "Das API-Token f\u00fcr dein PTDevices-Konto."
+                },
+                "description": "Gib das API-Token f\u00fcr dein PTDevices-Konto ein."
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Externe Stromversorgung"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Batteriespannung"
+            },
+            "depth_level": {
+                "name": "F\u00fcllstandstiefe"
+            },
+            "percent_level": {
+                "name": "F\u00fcllstandsprozent"
+            },
+            "probe_temperature": {
+                "name": "F\u00fchler-Temperatur"
+            },
+            "status": {
+                "name": "Status",
+                "state": {
+                    "not_connected": "Nicht verbunden",
+                    "not_connected_yet": "Noch nicht verbunden",
+                    "power_internet_out_or_receiver_not_working": "Strom- oder Internetausfall oder nicht funktionierender Empf\u00e4nger",
+                    "press_transmitter_connect_button": "Verbindungstaste des Senders dr\u00fccken",
+                    "transmitter_not_reporting": "Sender meldet nicht",
+                    "working": "In Betrieb"
+                }
+            },
+            "tx_signal": {
+                "name": "LoRa-Signalst\u00e4rke"
+            },
+            "volume_level": {
+                "name": "F\u00fcllstandsvolumen"
+            },
+            "wifi_signal": {
+                "name": "WLAN-Signalst\u00e4rke"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Verbindung fehlgeschlagen: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Ung\u00fcltiges Zugriffstoken: {error}"
+        }
+    }
+}

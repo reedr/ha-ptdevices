@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Kontot \u00e4r redan konfigurerat",
+            "invalid_access_token": "Ogiltig \u00e5tkomsttoken"
+        },
+        "error": {
+            "cannot_connect": "Det gick inte att ansluta",
+            "invalid_access_token": "Ogiltig \u00e5tkomsttoken",
+            "no_devices_found": "Inga enheter \u00e4r registrerade p\u00e5 ditt PTDevices-konto.",
+            "unknown": "Ov\u00e4ntat fel"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API-token"
+                },
+                "data_description": {
+                    "api_token": "API-token f\u00f6r ditt PTDevices-konto."
+                },
+                "description": "Ange API-token f\u00f6r ditt PTDevices-konto"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Extern str\u00f6m"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Batterisp\u00e4nning"
+            },
+            "depth_level": {
+                "name": "Niv\u00e5 djup"
+            },
+            "percent_level": {
+                "name": "Niv\u00e5 procent"
+            },
+            "probe_temperature": {
+                "name": "Sondtemperatur"
+            },
+            "status": {
+                "name": "Status",
+                "state": {
+                    "not_connected": "Inte ansluten",
+                    "not_connected_yet": "Inte ansluten \u00e4n",
+                    "power_internet_out_or_receiver_not_working": "Str\u00f6mavbrott, internetavbrott eller mottagaren fungerar inte",
+                    "press_transmitter_connect_button": "Tryck p\u00e5 s\u00e4ndarens anslutningsknapp",
+                    "transmitter_not_reporting": "S\u00e4ndaren rapporterar inte",
+                    "working": "Fungerar"
+                }
+            },
+            "tx_signal": {
+                "name": "LoRa-signalstyrka"
+            },
+            "volume_level": {
+                "name": "Niv\u00e5 volym"
+            },
+            "wifi_signal": {
+                "name": "Wi-Fi signalstyrka"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Misslyckades med att ansluta: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Ogiltig \u00e5tkomsttoken: {error}"
+        }
+    }
+}

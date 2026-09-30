@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Le compte est d\u00e9j\u00e0 configur\u00e9",
+            "invalid_access_token": "Jeton d'acc\u00e8s non valide"
+        },
+        "error": {
+            "cannot_connect": "\u00c9chec de la connexion",
+            "invalid_access_token": "Jeton d'acc\u00e8s non valide",
+            "no_devices_found": "Aucun appareil n'est enregistr\u00e9 sur votre compte PTDevices.",
+            "unknown": "Erreur inattendue"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "Jeton d'API"
+                },
+                "data_description": {
+                    "api_token": "Le jeton API de votre compte PTDevices."
+                },
+                "description": "Entrez le jeton API de votre compte PTDevices"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Alimentation externe"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Tension de la batterie"
+            },
+            "depth_level": {
+                "name": "Niveau de profondeur"
+            },
+            "percent_level": {
+                "name": "Niveau en pourcentage"
+            },
+            "probe_temperature": {
+                "name": "Temp\u00e9rature de la sonde"
+            },
+            "status": {
+                "name": "\u00c9tat",
+                "state": {
+                    "not_connected": "Non connect\u00e9",
+                    "not_connected_yet": "Pas encore connect\u00e9",
+                    "power_internet_out_or_receiver_not_working": "Coupure de courant ou d'internet, ou r\u00e9cepteur hors service",
+                    "press_transmitter_connect_button": "Appuyez sur le bouton de connexion de l'\u00e9metteur",
+                    "transmitter_not_reporting": "L'\u00e9metteur ne r\u00e9pond pas",
+                    "working": "En fonctionnement"
+                }
+            },
+            "tx_signal": {
+                "name": "Puissance du signal LoRa"
+            },
+            "volume_level": {
+                "name": "Niveau de volume"
+            },
+            "wifi_signal": {
+                "name": "Force du signal Wi-Fi"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "\u00c9chec de la connexion\u00a0: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Jeton d'acc\u00e8s invalide\u00a0: {error}"
+        }
+    }
+}

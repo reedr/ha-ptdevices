@@ -1,0 +1,11 @@
+{
+    "entity": {
+        "sensor": {
+            "status": {
+                "state": {
+                    "power_internet_out_or_receiver_not_working": "Str\u00f8mbrudd eller internettbrudd, eller mottakeren fungerer ikke"
+                }
+            }
+        }
+    }
+}

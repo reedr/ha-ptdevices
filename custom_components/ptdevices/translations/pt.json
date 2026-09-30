@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Conta j\u00e1 configurada",
+            "invalid_access_token": "Token de acesso inv\u00e1lido"
+        },
+        "error": {
+            "cannot_connect": "A liga\u00e7\u00e3o falhou",
+            "invalid_access_token": "Token de acesso inv\u00e1lido",
+            "no_devices_found": "N\u00e3o h\u00e1 dispositivos registados na sua conta PTDevices.",
+            "unknown": "Erro inesperado"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "Token API"
+                },
+                "data_description": {
+                    "api_token": "O token da API para a sua conta PTDevices."
+                },
+                "description": "Introduza o token da API para a sua conta PTDevices"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Alimenta\u00e7\u00e3o externa"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Tens\u00e3o da bateria"
+            },
+            "depth_level": {
+                "name": "Profundidade do n\u00edvel"
+            },
+            "percent_level": {
+                "name": "N\u00edvel percentual"
+            },
+            "probe_temperature": {
+                "name": "Temperatura da sonda"
+            },
+            "status": {
+                "name": "Estado",
+                "state": {
+                    "not_connected": "N\u00e3o ligado",
+                    "not_connected_yet": "Ainda n\u00e3o ligado",
+                    "power_internet_out_or_receiver_not_working": "Falta de energia ou de Internet ou o recetor n\u00e3o funciona",
+                    "press_transmitter_connect_button": "Premir o bot\u00e3o de liga\u00e7\u00e3o do transmissor",
+                    "transmitter_not_reporting": "O transmissor n\u00e3o est\u00e1 a comunicar",
+                    "working": "A trabalhar"
+                }
+            },
+            "tx_signal": {
+                "name": "Intensidade do sinal LoRa"
+            },
+            "volume_level": {
+                "name": "N\u00edvel de volume"
+            },
+            "wifi_signal": {
+                "name": "Intensidade do sinal Wi-Fi"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Erro ao ligar: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Token de acesso inv\u00e1lido: {error}"
+        }
+    }
+}

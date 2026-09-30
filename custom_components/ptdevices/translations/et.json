@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Kasutaja on juba seadistatud",
+            "invalid_access_token": "Vigane juurdep\u00e4\u00e4sut\u00f5end"
+        },
+        "error": {
+            "cannot_connect": "\u00dchendamine nurjus",
+            "invalid_access_token": "Vigane juurdep\u00e4\u00e4sut\u00f5end",
+            "no_devices_found": "PTDevices kontole pole \u00fchtegi seadet registreeritud.",
+            "unknown": "Ootamatu t\u00f5rge"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API v\u00f5ti"
+                },
+                "data_description": {
+                    "api_token": "PTDevices konto API tunnus."
+                },
+                "description": "Sisesta oma PTDevices konto API tunnuskood"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "V\u00e4line toide"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Aku pinge"
+            },
+            "depth_level": {
+                "name": "Taseme s\u00fcgavus"
+            },
+            "percent_level": {
+                "name": "Taseme protsent"
+            },
+            "probe_temperature": {
+                "name": "Sondi temperatuur"
+            },
+            "status": {
+                "name": "Olek",
+                "state": {
+                    "not_connected": "Pole \u00fchendatud",
+                    "not_connected_yet": "Pole veel \u00fchendatud",
+                    "power_internet_out_or_receiver_not_working": "Toide v\u00f5i internet on v\u00e4lja l\u00fclitatud v\u00f5i vastuv\u00f5tja ei t\u00f6\u00f6ta",
+                    "press_transmitter_connect_button": "Vajuta saatja \u00fchendamise nuppu",
+                    "transmitter_not_reporting": "Saatja ei edasta andmeid",
+                    "working": "T\u00f6\u00f6tab"
+                }
+            },
+            "tx_signal": {
+                "name": "LoRa signaali tugevus"
+            },
+            "volume_level": {
+                "name": "Taseme helitugevus"
+            },
+            "wifi_signal": {
+                "name": "Wi-Fi signaali tugevus"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "\u00dchendamine nurjus: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Vale juurdep\u00e4\u00e4sutunnus: {error}"
+        }
+    }
+}

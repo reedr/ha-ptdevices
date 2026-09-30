@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Paskyra jau sukonfig\u016bruota",
+            "invalid_access_token": "Neteisingas prieigos raktas"
+        },
+        "error": {
+            "cannot_connect": "Nepavyko prisijungti",
+            "invalid_access_token": "Neteisingas prieigos raktas",
+            "no_devices_found": "J\u016bs\u0173 PTDevices paskyroje n\u0117ra u\u017eregistruot\u0173 \u012frengini\u0173.",
+            "unknown": "Netik\u0117ta klaida"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API prieigos raktas"
+                },
+                "data_description": {
+                    "api_token": "J\u016bs\u0173 PTDevices paskyros API prieigos raktas."
+                },
+                "description": "\u012eveskite savo PTDevices paskyros API prieigos rakt\u0105"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "I\u0161orinis maitinimas"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Akumuliatoriaus \u012ftampa"
+            },
+            "depth_level": {
+                "name": "Lygio gylis"
+            },
+            "percent_level": {
+                "name": "Lygio procentas"
+            },
+            "probe_temperature": {
+                "name": "Zondo temperat\u016bra"
+            },
+            "status": {
+                "name": "B\u016bsena",
+                "state": {
+                    "not_connected": "Nesusijungta",
+                    "not_connected_yet": "Dar neprijungta",
+                    "power_internet_out_or_receiver_not_working": "Maitinimo ar interneto i\u0161vestis arba imtuvas neveikia",
+                    "press_transmitter_connect_button": "Paspauskite si\u0173stuvo prijungimo mygtuk\u0105",
+                    "transmitter_not_reporting": "Si\u0173stuvas neprane\u0161a",
+                    "working": "Darbas"
+                }
+            },
+            "tx_signal": {
+                "name": "LoRa signalo stiprumas"
+            },
+            "volume_level": {
+                "name": "Garsumo lygis"
+            },
+            "wifi_signal": {
+                "name": "Wi-Fi signalo stiprumas"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Nepavyko prisijungti: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Neteisingas prieigos raktas: {error}"
+        }
+    }
+}

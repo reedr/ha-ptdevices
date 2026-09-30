@@ -1,0 +1,42 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Account is al geconfigureerd",
+            "invalid_access_token": "Ongeldig toegangstoken"
+        },
+        "error": {
+            "cannot_connect": "Kan geen verbinding maken",
+            "invalid_access_token": "Ongeldig toegangstoken",
+            "unknown": "Onverwachte fout"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API-token"
+                }
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "status": {
+                "name": "Status",
+                "state": {
+                    "not_connected": "Niet verbonden",
+                    "not_connected_yet": "Nog niet verbonden"
+                }
+            },
+            "wifi_signal": {
+                "name": "Wifi-signaalsterkte"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Kan geen verbinding maken: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Ongeldig toegangstoken: {error}"
+        }
+    }
+}

@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "\u5e33\u865f\u5df2\u7d93\u8a2d\u5b9a\u5b8c\u6210",
+            "invalid_access_token": "\u5b58\u53d6\u6b0a\u6756\u7121\u6548"
+        },
+        "error": {
+            "cannot_connect": "\u9023\u7dda\u5931\u6557",
+            "invalid_access_token": "\u5b58\u53d6\u6b0a\u6756\u7121\u6548",
+            "no_devices_found": "PTDevices \u5e33\u865f\u5c1a\u672a\u8a3b\u518a\u4efb\u4f55\u88dd\u7f6e\u3002",
+            "unknown": "\u672a\u9810\u671f\u932f\u8aa4"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API \u6b0a\u6756"
+                },
+                "data_description": {
+                    "api_token": "PTDevices \u5e33\u865f API \u6b0a\u6756"
+                },
+                "description": "\u8f38\u5165 PTDevices \u5e33\u865f API \u6b0a\u6756"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "\u5916\u90e8\u529f\u7387"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "\u96fb\u6c60\u96fb\u58d3"
+            },
+            "depth_level": {
+                "name": "\u7b49\u7d1a\u6df1\u5ea6"
+            },
+            "percent_level": {
+                "name": "\u7b49\u7d1a\u767e\u5206\u6bd4"
+            },
+            "probe_temperature": {
+                "name": "\u63a2\u982d\u6eab\u5ea6"
+            },
+            "status": {
+                "name": "\u72c0\u614b",
+                "state": {
+                    "not_connected": "\u672a\u9023\u7dda",
+                    "not_connected_yet": "\u5c1a\u672a\u9023\u7dda",
+                    "power_internet_out_or_receiver_not_working": "\u96fb\u6e90\u6216\u7db2\u8def\u4e2d\u65b7\uff0c\u6216\u63a5\u6536\u5668\u7121\u6cd5\u904b\u4f5c",
+                    "press_transmitter_connect_button": "\u6309\u4e0b\u767c\u5c04\u5668\u9023\u63a5\u6309\u9215",
+                    "transmitter_not_reporting": "\u767c\u5c04\u5668\u672a\u56de\u5831",
+                    "working": "\u5de5\u4f5c\u4e2d"
+                }
+            },
+            "tx_signal": {
+                "name": "LoRa \u8a0a\u865f\u5f37\u5ea6"
+            },
+            "volume_level": {
+                "name": "\u97f3\u91cf"
+            },
+            "wifi_signal": {
+                "name": "Wi-Fi \u8a0a\u865f\u5f37\u5ea6"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "\u9023\u7dda\u5931\u6557\uff1a{error}"
+        },
+        "invalid_access_token": {
+            "message": "\u5b58\u53d6\u6b0a\u6756\u7121\u6548\uff1a{error}"
+        }
+    }
+}

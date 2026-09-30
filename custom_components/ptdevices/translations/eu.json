@@ -1,0 +1,44 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Kontua dagoeneko konfiguratuta dago",
+            "invalid_access_token": "Sarbide token baliogabea"
+        },
+        "error": {
+            "cannot_connect": "Konexioak huts egin du",
+            "invalid_access_token": "Sarbide token baliogabea",
+            "no_devices_found": "Ez dago zure PTDevices kontuan erregistratutako gailurik.",
+            "unknown": "Ustekabeko errorea"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API tokena"
+                },
+                "data_description": {
+                    "api_token": "Zure PTDevices kontuaren API tokena."
+                },
+                "description": "Zure PTDevices kontuaren API tokena sartu."
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "battery_voltage": {
+                "name": "Bateria-tentsioa"
+            },
+            "depth_level": {
+                "name": "Sakonera maila"
+            },
+            "percent_level": {
+                "name": "Portzentai maila"
+            },
+            "status": {
+                "name": "Egoera"
+            },
+            "volume_level": {
+                "name": "Bolumen maila"
+            }
+        }
+    }
+}

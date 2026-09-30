@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "\u00da\u010det je u\u017e nakonfigurovan\u00fd",
+            "invalid_access_token": "Neplatn\u00fd pr\u00edstupov\u00fd token"
+        },
+        "error": {
+            "cannot_connect": "Nepodarilo sa pripoji\u0165",
+            "invalid_access_token": "Neplatn\u00fd pr\u00edstupov\u00fd token",
+            "no_devices_found": "K v\u00e1\u0161mu \u00fa\u010dtu PTDevices nie s\u00fa registrovan\u00e9 \u017eiadne zariadenia.",
+            "unknown": "Neo\u010dak\u00e1van\u00e1 chyba"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API token"
+                },
+                "data_description": {
+                    "api_token": "Token API pre v\u00e1\u0161 \u00fa\u010det PTDevices."
+                },
+                "description": "Zadajte API token pre v\u00e1\u0161 \u00fa\u010det PTDevices"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Extern\u00e9 nap\u00e1janie"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Nap\u00e4tie bat\u00e9rie"
+            },
+            "depth_level": {
+                "name": "\u00darove\u0148 h\u013abky"
+            },
+            "percent_level": {
+                "name": "Percentu\u00e1lna \u00farove\u0148"
+            },
+            "probe_temperature": {
+                "name": "Teplota sondy"
+            },
+            "status": {
+                "name": "Stav",
+                "state": {
+                    "not_connected": "Nie je pripojen\u00e9",
+                    "not_connected_yet": "Zatia\u013e nepripojen\u00e9",
+                    "power_internet_out_or_receiver_not_working": "V\u00fdpadok nap\u00e1jania, internetu alebo prij\u00edma\u010da nefunguje",
+                    "press_transmitter_connect_button": "Stla\u010dte tla\u010didlo pripojenia vysiela\u010da",
+                    "transmitter_not_reporting": "Vysiela\u010d sa nehl\u00e1si",
+                    "working": "Pracuje"
+                }
+            },
+            "tx_signal": {
+                "name": "Sila sign\u00e1lu LoRa"
+            },
+            "volume_level": {
+                "name": "\u00darove\u0148 hlasitosti"
+            },
+            "wifi_signal": {
+                "name": "Sila Wifi sign\u00e1lu"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Nepodarilo sa pripoji\u0165: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Neplatn\u00fd pr\u00edstupov\u00fd token: {error}"
+        }
+    }
+}

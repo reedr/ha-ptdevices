@@ -1,0 +1,69 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "A fi\u00f3k m\u00e1r konfigur\u00e1lva van",
+            "invalid_access_token": "\u00c9rv\u00e9nytelen hozz\u00e1f\u00e9r\u00e9si token"
+        },
+        "error": {
+            "cannot_connect": "Sikertelen csatlakoz\u00e1s",
+            "invalid_access_token": "\u00c9rv\u00e9nytelen hozz\u00e1f\u00e9r\u00e9si token",
+            "no_devices_found": "Nem tal\u00e1lhat\u00f3 egyetlen eszk\u00f6z sem a PTDevices fi\u00f3kj\u00e1ban.",
+            "unknown": "V\u00e1ratlan hiba"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "API Token"
+                },
+                "data_description": {
+                    "api_token": "A PTDevices fi\u00f3kj\u00e1hoz tartoz\u00f3 API token."
+                },
+                "description": "Adja meg a PTDevices fi\u00f3kj\u00e1hoz tartoz\u00f3 API tokent"
+            }
+        }
+    },
+    "entity": {
+        "sensor": {
+            "battery_voltage": {
+                "name": "Akkumul\u00e1tor fesz\u00fclts\u00e9ge"
+            },
+            "depth_level": {
+                "name": "M\u00e9lys\u00e9gszint"
+            },
+            "percent_level": {
+                "name": "Szintsz\u00e1zal\u00e9k"
+            },
+            "probe_temperature": {
+                "name": "Szonda h\u0151m\u00e9rs\u00e9klete"
+            },
+            "status": {
+                "name": "\u00c1llapot",
+                "state": {
+                    "not_connected": "Nincs csatlakoztatva",
+                    "not_connected_yet": "M\u00e9g nincs csatlakoztatva",
+                    "power_internet_out_or_receiver_not_working": "\u00c1ramkimarad\u00e1s, internetkimarad\u00e1s vagy a vev\u0151 nem m\u0171k\u00f6dik",
+                    "press_transmitter_connect_button": "Nyomja meg az ad\u00f3 csatlakoz\u00e1s gombj\u00e1t",
+                    "transmitter_not_reporting": "Az ad\u00f3 nem k\u00fcld adatot",
+                    "working": "M\u0171k\u00f6dik"
+                }
+            },
+            "tx_signal": {
+                "name": "LoRa jelszint"
+            },
+            "volume_level": {
+                "name": "T\u00e9rfogatszint"
+            },
+            "wifi_signal": {
+                "name": "Wi-Fi jelszint"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "Sikertelen csatlakoz\u00e1s: {error}"
+        },
+        "invalid_access_token": {
+            "message": "\u00c9rv\u00e9nytelen hozz\u00e1f\u00e9r\u00e9si token: {error}"
+        }
+    }
+}

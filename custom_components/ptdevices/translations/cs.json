@@ -1,0 +1,74 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "\u00da\u010det je ji\u017e nastaven",
+            "invalid_access_token": "Neplatn\u00fd p\u0159\u00edstupov\u00fd token"
+        },
+        "error": {
+            "cannot_connect": "Nepoda\u0159ilo se p\u0159ipojit",
+            "invalid_access_token": "Neplatn\u00fd p\u0159\u00edstupov\u00fd token",
+            "no_devices_found": "K va\u0161emu \u00fa\u010dtu PTDevices nejsou registrov\u00e1na \u017e\u00e1dn\u00e1 za\u0159\u00edzen\u00ed.",
+            "unknown": "Neo\u010dek\u00e1van\u00e1 chyba"
+        },
+        "step": {
+            "user": {
+                "data": {
+                    "api_token": "Token API"
+                },
+                "data_description": {
+                    "api_token": "Token API pro v\u00e1\u0161 \u00fa\u010det PTDevices."
+                },
+                "description": "Zadejte token API pro v\u00e1\u0161 \u00fa\u010det PTDevices"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "external_power": {
+                "name": "Extern\u00ed nap\u00e1jen\u00ed"
+            }
+        },
+        "sensor": {
+            "battery_voltage": {
+                "name": "Nap\u011bt\u00ed baterie"
+            },
+            "depth_level": {
+                "name": "Hloubka hladiny"
+            },
+            "percent_level": {
+                "name": "Hladina v procentech"
+            },
+            "probe_temperature": {
+                "name": "Teplota sondy"
+            },
+            "status": {
+                "name": "Stav",
+                "state": {
+                    "not_connected": "Nep\u0159ipojeno",
+                    "not_connected_yet": "Zat\u00edm nep\u0159ipojeno",
+                    "power_internet_out_or_receiver_not_working": "V\u00fdpadek nap\u00e1jen\u00ed, internetu nebo p\u0159ij\u00edma\u010de",
+                    "press_transmitter_connect_button": "Stiskn\u011bte tla\u010d\u00edtko pro p\u0159ipojen\u00ed vys\u00edla\u010de",
+                    "transmitter_not_reporting": "Vys\u00edla\u010d se nehl\u00e1s\u00ed",
+                    "working": "Pracuje"
+                }
+            },
+            "tx_signal": {
+                "name": "S\u00edla sign\u00e1lu LoRa"
+            },
+            "volume_level": {
+                "name": "\u00darove\u0148 hladiny"
+            },
+            "wifi_signal": {
+                "name": "S\u00edla sign\u00e1lu Wi-Fi"
+            }
+        }
+    },
+    "exceptions": {
+        "cannot_connect": {
+            "message": "P\u0159ipojen\u00ed se nezda\u0159ilo: {error}"
+        },
+        "invalid_access_token": {
+            "message": "Neplatn\u00fd p\u0159\u00edstupov\u00fd token: {error}"
+        }
+    }
+}
