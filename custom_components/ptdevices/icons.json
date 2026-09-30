@@ -4,6 +4,9 @@
       "battery_voltage": {
         "default": "mdi:battery"
       },
+      "capacity_volume": {
+        "default": "mdi:storage-tank"
+      },
       "depth_level": {
         "default": "mdi:water"
       },
@@ -13,14 +16,26 @@
       "probe_temperature": {
         "default": "mdi:thermometer"
       },
+      "reported": {
+        "default": "mdi:cloud-clock-outline"
+      },
       "status": {
         "default": "mdi:information-outline"
+      },
+      "tank_depth": {
+        "default": "mdi:arrow-expand-vertical"
+      },
+      "tx_reported": {
+        "default": "mdi:clock-check-outline"
       },
       "tx_signal": {
         "default": "mdi:wifi"
       },
       "volume_level": {
         "default": "mdi:water"
+      },
+      "water_depth": {
+        "default": "mdi:waves-arrow-up"
       },
       "wifi_signal": {
         "default": "mdi:wifi"

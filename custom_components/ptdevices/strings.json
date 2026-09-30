@@ -32,14 +32,23 @@
       "battery_voltage": {
         "name": "Battery voltage"
       },
+      "capacity_volume": {
+        "name": "Volume"
+      },
       "depth_level": {
         "name": "Level depth"
+      },
+      "enclosure_temperature": {
+        "name": "Enclosure temperature"
       },
       "percent_level": {
         "name": "Level percent"
       },
       "probe_temperature": {
         "name": "Probe temperature"
+      },
+      "reported": {
+        "name": "Last reported"
       },
       "status": {
         "name": "Status",
@@ -52,11 +61,20 @@
           "working": "Working"
         }
       },
+      "tank_depth": {
+        "name": "Tank depth"
+      },
+      "tx_reported": {
+        "name": "Transmitter last reported"
+      },
       "tx_signal": {
         "name": "LoRa signal strength"
       },
       "volume_level": {
         "name": "Level volume"
+      },
+      "water_depth": {
+        "name": "Water depth"
       },
       "wifi_signal": {
         "name": "Wi-Fi signal strength"
@@ -69,6 +87,17 @@
     },
     "invalid_access_token": {
       "message": "Invalid access token: {error}"
+    }
+  },
+  "options": {
+    "abort": {
+      "not_loaded": "The integration must be loaded to set tank capacities."
+    },
+    "step": {
+      "init": {
+        "title": "Tank capacities",
+        "description": "Enter each tank's full capacity (gallons on US accounts, litres otherwise) to add a Volume sensor. Leave a tank blank for no Volume sensor."
+      }
     }
   }
 }

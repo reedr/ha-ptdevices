@@ -38,8 +38,14 @@ async def async_setup_entry(
     )
     await coordinator.async_config_entry_first_refresh()
     await hass.config_entries.async_forward_entry_setups(config_entry, _PLATFORMS)
+    config_entry.async_on_unload(config_entry.add_update_listener(_async_update_options))
 
     return True
+
+
+async def _async_update_options(hass: HomeAssistant, entry: PTDevicesConfigEntry) -> None:
+    """Reload to add or remove capacity volume sensors."""
+    hass.config_entries.async_schedule_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: PTDevicesConfigEntry) -> bool:

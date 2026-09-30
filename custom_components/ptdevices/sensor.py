@@ -1,12 +1,14 @@
 """Sensors for PTDevices device."""
 
+import re
 from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import UTC, datetime, timedelta
 from enum import StrEnum
-from typing import cast, override
+from string import ascii_letters
+from typing import Any, cast, override
 
 from aioptdevices.interface import PTDevicesStatusStates
-
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -24,7 +26,9 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.util import dt as dt_util
 
+from .const import CONF_CAPACITIES
 from .coordinator import PTDevicesConfigEntry, PTDevicesCoordinator
 from .entity import PTDevicesEntity
 
@@ -147,6 +151,128 @@ SENSOR_DESCRIPTIONS: tuple[PTDevicesSensorEntityDescription, ...] = (
 )
 
 
+_MONTHS = ("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+_REPORTED_RE = re.compile(
+    r"([A-Z][a-z]{2}) (\d{1,2})(?:st|nd|rd|th)?,?(?: (\d{4}),?)? (\d{1,2}):(\d{2}) ([AP]M)"
+)
+
+
+def parse_reported(value: Any, now: datetime) -> datetime | None:
+    """Parse the API's report times, e.g. "Sep 30th, 11:18 PM".
+
+    The API gives these in UTC and without a year, so the year is the one that
+    puts the time closest before ``now``.
+    """
+    if not isinstance(value, str) or not (match := _REPORTED_RE.fullmatch(value.strip())):
+        return None
+    month, day, year, hour, minute, meridiem = match.groups()
+    if month not in _MONTHS:
+        return None
+    hour_24 = int(hour) % 12 + (12 if meridiem == "PM" else 0)
+    for candidate in ((int(year),) if year else (now.year, now.year - 1)):
+        try:
+            reported = datetime(
+                candidate, _MONTHS.index(month) + 1, int(day), hour_24, int(minute), tzinfo=UTC
+            )
+        except ValueError:
+            continue
+        if year or reported <= now + timedelta(days=1):
+            return reported
+    return None
+
+
+def _number(value: Any) -> float | None:
+    """Return a reading as a float, tolerating unit suffixes like "100%"."""
+    if value is None:
+        return None
+    try:
+        return float(str(value).strip(ascii_letters + "%° "))
+    except ValueError:
+        return None
+
+
+def _imperial(device: dict[str, Any]) -> bool:
+    return device.get("units") in ("US Imperial", "British Imperial")
+
+
+def _water_depth(device: dict[str, Any]) -> float | None:
+    depth = _number(device.get("depth"))
+    percent = _number(device.get(PTDevicesSensors.LEVEL_PERCENT))
+    if depth is None or percent is None:
+        return None
+    return round(depth * percent / 100, 2)
+
+
+@dataclass(kw_only=True, frozen=True)
+class PTDevicesExtraSensorEntityDescription(SensorEntityDescription):
+    """A sensor the core integration doesn't offer, built from the raw API fields."""
+
+    exists_fn: Callable[[dict[str, Any]], bool]
+    value_fn: Callable[[dict[str, Any]], float | datetime | None]
+    unit_fn: Callable[[dict[str, Any]], str] | None = None
+
+
+_DEPTH_UNIT: Callable[[dict[str, Any]], str] = lambda d: (  # noqa: E731
+    UnitOfLength.FEET if _imperial(d) else UnitOfLength.METERS
+)
+
+EXTRA_SENSOR_DESCRIPTIONS: tuple[PTDevicesExtraSensorEntityDescription, ...] = (
+    # When the tank transmitter last reported a level
+    PTDevicesExtraSensorEntityDescription(
+        key="tx_reported",
+        translation_key="tx_reported",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        exists_fn=lambda d: "tx_reported" in d,
+        value_fn=lambda d: parse_reported(d.get("tx_reported"), dt_util.utcnow()),
+    ),
+    # When the receiver last reported to the cloud
+    PTDevicesExtraSensorEntityDescription(
+        key="reported",
+        translation_key="reported",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda d: "reported" in d,
+        value_fn=lambda d: parse_reported(d.get("reported"), dt_util.utcnow()),
+    ),
+    PTDevicesExtraSensorEntityDescription(
+        key="enclosure_temperature",
+        translation_key="enclosure_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda d: "enclosure_temperature" in d,
+        value_fn=lambda d: _number(d.get("enclosure_temperature")),
+        unit_fn=lambda d: (
+            UnitOfTemperature.FAHRENHEIT
+            if d.get("temperature_units") == "F"
+            else UnitOfTemperature.CELSIUS
+        ),
+    ),
+    # Tank depth as set up in the PTDevices app
+    PTDevicesExtraSensorEntityDescription(
+        key="tank_depth",
+        translation_key="tank_depth",
+        device_class=SensorDeviceClass.DISTANCE,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda d: "depth" in d,
+        value_fn=lambda d: _number(d.get("depth")),
+        unit_fn=_DEPTH_UNIT,
+    ),
+    PTDevicesExtraSensorEntityDescription(
+        key="water_depth",
+        translation_key="water_depth",
+        device_class=SensorDeviceClass.DISTANCE,
+        state_class=SensorStateClass.MEASUREMENT,
+        exists_fn=lambda d: "depth" in d and PTDevicesSensors.LEVEL_PERCENT in d,
+        value_fn=_water_depth,
+        unit_fn=_DEPTH_UNIT,
+        suggested_display_precision=2,
+    ),
+)
+
+CAPACITY_VOLUME_KEY = "capacity_volume"
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     config_entry: PTDevicesConfigEntry,
@@ -154,24 +280,37 @@ async def async_setup_entry(
 ) -> None:
     """Set up PTDevices sensors from config entries."""
     coordinator = config_entry.runtime_data
+    capacities: dict[str, float] = config_entry.options.get(CONF_CAPACITIES, {})
 
     known_sensors: set[tuple[str, str]] = set()
 
     def _check_device() -> None:
         for device_id in sorted(coordinator.data):
             device = coordinator.data[device_id]
-            new_sensors = [
-                sensor
+            new_entities: list[SensorEntity] = [
+                PTDevicesSensorEntity(coordinator, sensor, device_id)
                 for sensor in SENSOR_DESCRIPTIONS
                 if sensor.key in device and (device_id, sensor.key) not in known_sensors
             ]
-            if not new_sensors:
+            new_entities += [
+                PTDevicesExtraSensorEntity(coordinator, sensor, device_id)
+                for sensor in EXTRA_SENSOR_DESCRIPTIONS
+                if sensor.exists_fn(device) and (device_id, sensor.key) not in known_sensors
+            ]
+            if (
+                capacities.get(device_id)
+                and PTDevicesSensors.LEVEL_PERCENT in device
+                and (device_id, CAPACITY_VOLUME_KEY) not in known_sensors
+            ):
+                new_entities.append(
+                    PTDevicesCapacityVolumeEntity(coordinator, device_id, capacities[device_id])
+                )
+            if not new_entities:
                 continue
-            known_sensors.update((device_id, sensor.key) for sensor in new_sensors)
-            async_add_entity(
-                PTDevicesSensorEntity(config_entry.runtime_data, sensor, device_id)
-                for sensor in new_sensors
+            known_sensors.update(
+                (device_id, entity.entity_description.key) for entity in new_entities
             )
+            async_add_entity(new_entities)
 
     _check_device()
     config_entry.async_on_unload(coordinator.async_add_listener(_check_device))
@@ -202,3 +341,67 @@ class PTDevicesSensorEntity(PTDevicesEntity, SensorEntity):
     def native_value(self) -> float | int | str | None:
         """Return the state of the sensor."""
         return self.entity_description.value_fn(self.device)
+
+
+class PTDevicesExtraSensorEntity(PTDevicesEntity, SensorEntity):
+    """A sensor built from the raw API fields."""
+
+    entity_description: PTDevicesExtraSensorEntityDescription
+
+    def __init__(
+        self,
+        coordinator: PTDevicesCoordinator,
+        description: PTDevicesExtraSensorEntityDescription,
+        device_id: str,
+    ) -> None:
+        """Initialize sensor."""
+        super().__init__(coordinator, description.key, device_id)
+        self.entity_description = description
+
+    @property
+    @override
+    def native_value(self) -> float | datetime | None:
+        """Return the state of the sensor."""
+        return self.entity_description.value_fn(self.device)
+
+    @property
+    @override
+    def native_unit_of_measurement(self) -> str | None:
+        """Return the unit, which can depend on the account's settings."""
+        if self.entity_description.unit_fn is not None:
+            return self.entity_description.unit_fn(self.device)
+        return super().native_unit_of_measurement
+
+
+class PTDevicesCapacityVolumeEntity(PTDevicesEntity, SensorEntity):
+    """Volume from the level and the tank capacity set in the options."""
+
+    entity_description = SensorEntityDescription(
+        key=CAPACITY_VOLUME_KEY,
+        translation_key=CAPACITY_VOLUME_KEY,
+        device_class=SensorDeviceClass.VOLUME_STORAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+    )
+
+    def __init__(
+        self, coordinator: PTDevicesCoordinator, device_id: str, capacity: float
+    ) -> None:
+        """Initialize sensor."""
+        super().__init__(coordinator, CAPACITY_VOLUME_KEY, device_id)
+        self._capacity = capacity
+
+    @property
+    @override
+    def native_value(self) -> float | None:
+        """Return the volume."""
+        percent = _number(self.device.get(PTDevicesSensors.LEVEL_PERCENT))
+        return None if percent is None else round(self._capacity * percent / 100)
+
+    @property
+    @override
+    def native_unit_of_measurement(self) -> str:
+        """Gallons for US accounts, litres otherwise."""
+        if self.device.get("units") == "US Imperial":
+            return UnitOfVolume.GALLONS
+        return UnitOfVolume.LITERS

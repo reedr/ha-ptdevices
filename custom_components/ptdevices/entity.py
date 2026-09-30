@@ -33,7 +33,7 @@ class PTDevicesEntity(CoordinatorEntity[PTDevicesCoordinator]):
             connections={(CONNECTION_NETWORK_MAC, self._device_id)},
             configuration_url=f"https://www.ptdevices.com/device/level/{self.device['id']}",
             manufacturer="ParemTech Inc.",
-            model=self.device["device_type"],
+            model=self.device.get("device_model") or self.device["device_type"],
             sw_version=str(self.device["version"]),
             name=self.device["title"],
         )
