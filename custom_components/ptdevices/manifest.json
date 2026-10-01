@@ -15,5 +15,5 @@
   "requirements": [
     "aioptdevices==2026.03.2"
   ],
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

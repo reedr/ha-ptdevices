@@ -23,6 +23,10 @@ from .conftest import NOW, setup_entry
         ("Oct 2nd, 12:30 PM", "2026-10-02 13:00", datetime(2026, 10, 2, 12, 30, tzinfo=UTC)),
         # Around new year the report can be from last year.
         ("Dec 31st, 11:59 PM", "2027-01-01 00:10", datetime(2026, 12, 31, 23, 59, tzinfo=UTC)),
+        # HA's clock a little behind the server's at New Year.
+        ("Jan 1st, 12:00 AM", "2026-12-31 23:59", datetime(2027, 1, 1, 0, 0, tzinfo=UTC)),
+        ("Feb 29th, 1:00 AM", "2028-03-01 00:00", datetime(2028, 2, 29, 1, 0, tzinfo=UTC)),
+        ("Feb 29th, 1:00 AM", "2027-03-01 00:00", None),
         ("Jun 28th 2026, 6:08 PM", "2026-09-30 23:30", datetime(2026, 6, 28, 18, 8, tzinfo=UTC)),
         ("48 seconds ago", "2026-09-30 23:30", None),
         (None, "2026-09-30 23:30", None),
@@ -59,7 +63,7 @@ async def test_entities(
     depth = hass.states.get("sensor.ro_tanks_tank_depth")
     assert float(depth.state) == pytest.approx(5.15)
     assert depth.attributes["unit_of_measurement"] == UnitOfLength.FEET
-    assert float(hass.states.get("sensor.ro_tanks_water_depth").state) == pytest.approx(4.64)
+    assert float(hass.states.get("sensor.ro_tanks_water_depth").state) == pytest.approx(4.635)
     assert float(hass.states.get("sensor.cistern_water_depth").state) == pytest.approx(6.0)
 
     # No capacity set, no volume sensor.
@@ -82,29 +86,69 @@ async def test_capacity_volume(
 
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
     assert result["step_id"] == "init"
-    assert set(result["data_schema"].schema) == {"RO Tanks", "Cistern"}
+    assert set(result["data_schema"].schema) == {"capacity_unit", "RO Tanks", "Cistern"}
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], {"RO Tanks": 1000, "Cistern": 5250}
+        result["flow_id"], {"capacity_unit": "gal", "RO Tanks": 1000, "Cistern": 5250}
     )
     assert config_entry.options == {
-        "capacities": {"AAAAAAAAAAA1": 1000.0, "AAAAAAAAAAA2": 5250.0}
+        "capacity_unit": "gal",
+        "capacities": {"AAAAAAAAAAA1": 1000.0, "AAAAAAAAAAA2": 5250.0},
     }
     await hass.async_block_till_done()
 
     volume = hass.states.get("sensor.ro_tanks_volume")
-    assert volume.state == "900"
+    assert float(volume.state) == pytest.approx(900)
     assert volume.attributes["unit_of_measurement"] == UnitOfVolume.GALLONS
-    assert hass.states.get("sensor.cistern_volume").state == "5250"
+    assert float(hass.states.get("sensor.cistern_volume").state) == pytest.approx(5250)
     assert er.async_get(hass).async_get_entity_id(
         "sensor", "ptdevices", "1234_AAAAAAAAAAA2_capacity_volume"
     )
 
-    # Clearing a capacity removes its sensor on reload.
+    # Clearing a capacity removes its sensor, registry entry included.
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
-    await hass.config_entries.options.async_configure(result["flow_id"], {"Cistern": 5250})
+    await hass.config_entries.options.async_configure(
+        result["flow_id"], {"capacity_unit": "gal", "Cistern": 5250}
+    )
     await hass.async_block_till_done()
-    assert config_entry.options == {"capacities": {"AAAAAAAAAAA2": 5250.0}}
-    assert hass.states.get("sensor.cistern_volume").state == "5250"
+    assert config_entry.options["capacities"] == {"AAAAAAAAAAA2": 5250.0}
+    assert float(hass.states.get("sensor.cistern_volume").state) == pytest.approx(5250)
+    assert hass.states.get("sensor.ro_tanks_volume") is None
+    assert not er.async_get(hass).async_get_entity_id(
+        "sensor", "ptdevices", "1234_AAAAAAAAAAA1_capacity_volume"
+    )
+
+
+async def test_legacy_capacity_options_are_gallons(
+    hass: HomeAssistant, mock_interface, freezer: FrozenDateTimeFactory
+) -> None:
+    """Options saved before the unit was stored meant gallons on a US account."""
+    freezer.move_to(NOW)
+    entry = MockConfigEntry(
+        domain="ptdevices",
+        title="Test User",
+        data={"api_token": "t"},
+        unique_id="1234",
+        options={"capacities": {"AAAAAAAAAAA2": 5250}},
+    )
+    await setup_entry(hass, entry)
+    volume = hass.states.get("sensor.cistern_volume")
+    assert volume.attributes["unit_of_measurement"] == UnitOfVolume.GALLONS
+    assert float(volume.state) == pytest.approx(5250)
+
+
+async def test_litres(hass: HomeAssistant, mock_interface, freezer) -> None:
+    freezer.move_to(NOW)
+    entry = MockConfigEntry(
+        domain="ptdevices",
+        title="Test User",
+        data={"api_token": "t"},
+        unique_id="1234",
+        options={"capacity_unit": "L", "capacities": {"AAAAAAAAAAA2": 1000}},
+    )
+    await setup_entry(hass, entry)
+    volume = hass.states.get("sensor.cistern_volume")
+    assert float(volume.state) == pytest.approx(1000)
+    assert volume.attributes["unit_of_measurement"] == UnitOfVolume.LITERS
 
 
 async def test_diagnostics_redacts(
@@ -115,7 +159,10 @@ async def test_diagnostics_redacts(
     await setup_entry(hass, config_entry)
     diag = await async_get_config_entry_diagnostics(hass, config_entry)
     assert diag["entry"]["data"]["api_token"] == "**REDACTED**"
-    device = diag["devices"]["AAAAAAAAAAA2"]
+    device = diag["devices"][1]
     assert device["user_email"] == "**REDACTED**"
+    assert device["local_ip"] == "**REDACTED**"
+    assert device["device_id"] == "**REDACTED**"
     assert device["tx_reported"] == "Sep 30th, 9:42 PM"
     assert device["power_y"] == 1122
+    assert "AAAAAAAAAAA" not in str(diag)

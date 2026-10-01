@@ -22,9 +22,11 @@ from homeassistant.helpers.selector import (
     NumberSelector,
     NumberSelectorConfig,
     NumberSelectorMode,
+    SelectSelector,
+    SelectSelectorConfig,
 )
 
-from .const import CONF_CAPACITIES, DEFAULT_URL, DOMAIN
+from .const import CONF_CAPACITIES, CONF_CAPACITY_UNIT, DEFAULT_URL, DOMAIN, capacity_unit
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -126,31 +128,40 @@ class PTDevicesConfigFlow(ConfigFlow, domain=DOMAIN):
 class PTDevicesOptionsFlow(OptionsFlow):
     """Set each tank's capacity, which adds a volume sensor."""
 
+    def __init__(self) -> None:
+        """Initialize the flow."""
+        self._fields: dict[str, str] | None = None
+
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
-        """One capacity field per device, labelled with its name."""
+        """One capacity field per device, labelled with its name, plus the unit."""
         if self.config_entry.state is not ConfigEntryState.LOADED:
             return self.async_abort(reason="not_loaded")
 
         devices: dict[str, dict[str, Any]] = self.config_entry.runtime_data.data
-        fields: dict[str, str] = {}
-        for device_id, device in sorted(
-            devices.items(), key=lambda item: str(item[1].get("title"))
-        ):
-            label = str(device.get("title") or device_id)
-            if label in fields:
-                label = f"{label} ({device_id})"
-            fields[label] = device_id
+        if self._fields is None:
+            # Built once, so a poll between showing and submitting the form
+            # can't reassign labels.
+            self._fields = {}
+            for device_id, device in sorted(
+                devices.items(), key=lambda item: (str(item[1].get("title")), item[0])
+            ):
+                label = str(device.get("title") or device_id)
+                if label in self._fields:
+                    label = f"{label} ({device_id})"
+                self._fields[label] = device_id
+        fields = self._fields
 
         if user_input is not None:
             return self.async_create_entry(
                 data={
+                    CONF_CAPACITY_UNIT: user_input.get(CONF_CAPACITY_UNIT, "gal"),
                     CONF_CAPACITIES: {
                         fields[label]: float(value)
                         for label, value in user_input.items()
                         if label in fields and value
-                    }
+                    },
                 }
             )
 
@@ -158,17 +169,20 @@ class PTDevicesOptionsFlow(OptionsFlow):
         selector = NumberSelector(
             NumberSelectorConfig(min=0, max=10_000_000, step=1, mode=NumberSelectorMode.BOX)
         )
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        label, description={"suggested_value": current.get(device_id)}
-                    ): selector
-                    for label, device_id in fields.items()
-                }
-            ),
+        schema: dict[Any, Any] = {
+            vol.Required(
+                CONF_CAPACITY_UNIT, default=capacity_unit(self.config_entry.options, devices)
+            ): SelectSelector(SelectSelectorConfig(options=["gal", "L"])),
+        }
+        schema.update(
+            {
+                vol.Optional(label, description={"suggested_value": current.get(device_id)}): (
+                    selector
+                )
+                for label, device_id in fields.items()
+            }
         )
+        return self.async_show_form(step_id="init", data_schema=vol.Schema(schema))
 
 
 class CannotConnect(HomeAssistantError):

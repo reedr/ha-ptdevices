@@ -96,7 +96,10 @@
     "step": {
       "init": {
         "title": "Tank capacities",
-        "description": "Enter each tank's full capacity (gallons on US accounts, litres otherwise) to add a Volume sensor. Leave a tank blank for no Volume sensor."
+        "description": "Enter each tank's full capacity to add a Volume sensor, in the unit chosen below. Leave a tank blank for no Volume sensor.",
+        "data": {
+          "capacity_unit": "Capacity unit"
+        }
       }
     }
   }
